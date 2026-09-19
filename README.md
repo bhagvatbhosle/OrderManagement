@@ -92,6 +92,32 @@ and try this sequence:
 5. `POST /api/orders/{id}/ship` — ship it
 6. `POST /api/orders/{id}/cancel` — try this *after* shipping and watch it correctly fail with 400
 
+## Interview Preparation
+
+### What is DDD?
+
+One-liner: "Domain-Driven Design is an approach where you design your code around the actual business problem, using the same language the business uses — instead of designing around the database or the framework."
+
+If they want more: "The idea is: talk to whoever understands the business — a product owner, a domain expert — and use their exact vocabulary in your code. If they call it an 'order being placed,' your code should literally have a method called Place(), not UpdateStatus(2). That shared vocabulary is called the Ubiquitous Language, and it's supposed to make the code readable to both developers and business people."
+
+### What is the use of it / why does it matter?
+
+One-liner: "It keeps business rules in one place — inside the model — instead of scattered across controllers, services, and validation layers where they're easy to duplicate or forget."
+
+If they want more: "Without DDD, I've seen the same rule — like 'an order can't be shipped before it's paid' — get checked in the API layer, then again in a service, then maybe not at all in a background job that was added later. With DDD, that rule lives on the Order object itself, so every code path that touches an order automatically respects it. It also just makes the code easier to talk about — you can point at a class and it maps to a real business concept, not an abstract data structure."
+
+### When would you use it?
+
+One-liner: "When the business logic is genuinely complex — lots of rules, workflows, and edge cases. I wouldn't reach for it on a simple CRUD app."
+
+If they want more: "If an app is basically 'save this form to a table, show it back,' DDD adds structure you don't need — it's overhead for no payoff. But once you have real business rules — things like 'you can't cancel an order after it ships,' multiple states, calculations, approval workflows — that's when putting the rules inside the domain model actually pays off. A good rule of thumb I use: if I find myself writing the same validation in two different places, that's a sign the logic belongs in the domain model instead."
+
+### Have you used it in your project?
+
+One-liner: "Yes — I built an Order Management system in .NET where an Order enforces its own rules, like not being shippable before it's placed, or not cancellable after it's shipped."
+
+If they want more, this is where you drop into your actual project — the layering (Domain/Application/Infrastructure/Api), the Order aggregate example, and the "I could swap the database without touching business logic" point from before. Since you've already got that answer solid, just bridge into it naturally: "Let me walk you through it..."
+
 ## Suggested learning path through this codebase
 
 1. **Start in `Domain/Common`** — understand `Entity`, `ValueObject`, `AggregateRoot`.
