@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>OrderManagement.Domain</RootNamespace>
+  </PropertyGroup>
+
+  <!-- Intentionally NO package references here.
+       The Domain layer must stay persistence-ignorant and framework-agnostic. -->
+
+</Project>
