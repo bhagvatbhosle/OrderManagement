@@ -1,4 +1,4 @@
-# OrderManagement — a from-scratch DDD starter (.NET 8 / C#)
+﻿# OrderManagement — a from-scratch DDD starter (.NET 8 / C#)
 
 A small Order Management aggregate, built to teach Domain-Driven Design fundamentals
 by example rather than just definition. Read the code top-down: `Domain` first, then
@@ -61,7 +61,28 @@ dotnet test tests/OrderManagement.Domain.Tests
 dotnet run --project src/OrderManagement.Api
 ```
 
-Then open the Swagger UI (URL printed in the console, typically `https://localhost:xxxx/swagger`)
+## Containerizing the API
+
+Build and run the API in a container:
+
+```bash
+docker build -t ordermanagement-api .
+docker run --rm -p 8080:8080 -v ordermanagement-data:/app/data ordermanagement-api
+```
+
+The container listens on port 8080 and stores the SQLite database under `/app/data` to keep data persistent when using a named volume.
+
+## Helm chart
+
+The repository includes a Helm chart under `helm/ordermanagement-api`.
+
+```bash
+helm install ordermanagement ./helm/ordermanagement-api --set image.repository=ordermanagement-api --set image.tag=latest
+```
+
+The chart creates a deployment, a service, and a PVC for the SQLite database. By default it mounts the database at `/data/ordermanagement.db`.
+
+Then open the Swagger UI (URL printed in the console, typically `http://localhost:8080/swagger` when running locally or via container)
 and try this sequence:
 
 1. `POST /api/orders` — `{ "customerId": "<any-guid>", "currency": "USD" }`
@@ -92,3 +113,4 @@ and try this sequence:
 - Add optimistic concurrency (a `RowVersion` column) to `Order` to handle concurrent updates.
 - Add integration tests using `WebApplicationFactory` against an in-memory SQLite database.
 - Introduce a `Specification` pattern for more complex queries (e.g. "orders placed in the last 30 days").
+

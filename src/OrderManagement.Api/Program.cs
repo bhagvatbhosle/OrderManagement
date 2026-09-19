@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using OrderManagement.Application.Abstractions;
 using OrderManagement.Application.Orders.Commands;
 using OrderManagement.Application.Orders.DTOs;
@@ -6,6 +6,8 @@ using OrderManagement.Infrastructure;
 using OrderManagement.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.WebHost.UseUrls(builder.Configuration["ASPNETCORE_URLS"] ?? "http://0.0.0.0:8080");
 
 // --- Infrastructure (DbContext, repositories, event dispatcher) ---
 builder.Services.AddInfrastructure(builder.Configuration);
@@ -41,7 +43,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
 app.MapControllers();
 
 app.Run();

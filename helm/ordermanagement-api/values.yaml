@@ -1,0 +1,29 @@
+﻿replicaCount: 1
+
+image:
+  repository: ordermanagement-api
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8080
+
+persistence:
+  enabled: true
+  size: 1Gi
+  storageClass: ""
+
+resources: {}
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+podAnnotations: {}
+
+containerPort: 8080
+
+appSettings:
+  aspNetUrls: http://+:8080
+  connectionString: Data Source=/data/ordermanagement.db
